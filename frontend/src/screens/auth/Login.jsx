@@ -1,5 +1,3 @@
-import React from "react";
-
 const Login = () => {
   return (
     <section className="flex items-center justify-center h-screen bg-dark-purple font-inter">
