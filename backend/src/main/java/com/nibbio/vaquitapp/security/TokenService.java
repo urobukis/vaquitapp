@@ -56,7 +56,7 @@ public class TokenService {
     }
 
     private Instant getExpirationFifteenMinutes(){
-        return Instant.now().plus(Duration.ofMinutes(1));
+        return Instant.now().plus(Duration.ofMinutes(120));
     }
 
     private Instant getExpirationSevenDays(){

@@ -1,9 +1,12 @@
 package com.nibbio.vaquitapp.models.user;
 
+import com.nibbio.vaquitapp.services.DataTransformer;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -12,6 +15,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final DataTransformer dataTransformer;
 
     public User userRegister(UserRegisterDTO dto){
         var findUser = userRepository.findByEmail(dto.email());
@@ -27,5 +31,10 @@ public class UserService {
             return userRepository.save(newUser);
         }
         return null;
+    }
+
+    public List<UserDTO> searchByName(String name) {
+        var users = userRepository.findByNameContainingIgnoreCase(name);
+        return users.stream().map(dataTransformer::transformUser).toList();
     }
 }
