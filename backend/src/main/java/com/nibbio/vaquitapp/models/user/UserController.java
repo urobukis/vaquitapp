@@ -3,6 +3,7 @@ package com.nibbio.vaquitapp.models.user;
 import com.nibbio.vaquitapp.models.group.GroupRequestDTO;
 import com.nibbio.vaquitapp.models.group.GroupResponseDTO;
 import com.nibbio.vaquitapp.models.group.GroupService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 @Transactional
 @RequestMapping("/user")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-key")
 public class UserController {
 
     private final GroupService groupService;

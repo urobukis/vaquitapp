@@ -1,5 +1,6 @@
 package com.nibbio.vaquitapp.models.spending;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 @Transactional
 @RequestMapping("/spending")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-key")
 public class SpendingController {
 
     private final SpendingService spendingService;
