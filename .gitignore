@@ -1,0 +1,53 @@
+# === FRONTEND (React + Tailwind) ===
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.DS_Store
+frontend/.next/
+frontend/.turbo/
+frontend/.parcel-cache/
+frontend/build/
+frontend/yarn.lock
+frontend/package-lock.json
+
+# Vite
+frontend/.vite
+
+# === BACKEND (Spring Boot + Maven) ===
+backend/target/
+backend/.env
+backend/.DS_Store
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/.vscode/
+backend/.mvn/wrapper/maven-wrapper.jar
+backend/.idea/
+backend/*.iml
+backend/logs/
+
+# Maven
+backend/pom.xml.tag
+backend/pom.xml.releaseBackup
+backend/pom.xml.versionsBackup
+backend/pom.xml.next
+backend/release.properties
+backend/dependency-reduced-pom.xml
+
+# === IDEs ===
+.idea/
+*.iml
+*.ipr
+*.iws
+*.sublime-workspace
+*.sublime-project
+.vscode/
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === LOGS / MISC ===
+*.log
+*.swp
+*.tmp

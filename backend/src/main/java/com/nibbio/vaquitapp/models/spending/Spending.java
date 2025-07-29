@@ -28,5 +28,15 @@ public class Spending {
     @Column(precision = 10, scale = 2)
     private BigDecimal amount;
     @ManyToOne
+    @JoinColumn(name = "group_id")
     private Group group;
+
+    @Override
+    public String toString() {
+        return "Spending{" +
+                "amount=" + amount +
+                ", user=" + user +
+                ", group=" + group +
+                '}';
+    }
 }
