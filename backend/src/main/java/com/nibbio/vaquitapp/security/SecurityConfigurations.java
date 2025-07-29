@@ -39,6 +39,7 @@ public class SecurityConfigurations {
                     req.requestMatchers(HttpMethod.POST, "/auth/google").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/auth/logout").permitAll();
                     req.requestMatchers(HttpMethod.POST, "/auth/refresh").permitAll();
+                    req.requestMatchers("/v3/api-docs/**", "swagger-ui.html", "/swagger-ui/**").permitAll();
                     req.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

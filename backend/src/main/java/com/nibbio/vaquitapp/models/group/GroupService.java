@@ -2,6 +2,7 @@ package com.nibbio.vaquitapp.models.group;
 
 import com.nibbio.vaquitapp.models.spending.Spending;
 import com.nibbio.vaquitapp.models.spending.SpendingDTO;
+import com.nibbio.vaquitapp.models.user.AnonymusUserDTO;
 import com.nibbio.vaquitapp.models.user.User;
 import com.nibbio.vaquitapp.models.user.UserRepository;
 import com.nibbio.vaquitapp.services.DataTransformer;
@@ -24,8 +25,7 @@ public class GroupService {
     private final UserRepository userRepository;
 
     public GroupResponseDTO createGroup(GroupRequestDTO group, Long id) {
-        var findUser = userRepository.findById(id);
-        User myUser = findUser.orElse(null);
+        var myUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
         List<User> members = new ArrayList<>();
         members.add(myUser);
         var newGroup = new Group(
@@ -34,7 +34,6 @@ public class GroupService {
                 group.title(),
                 null
         );
-        assert myUser != null;
         myUser.getUserGroups().add(newGroup);
         var saveGroup = groupRepository.save(newGroup);
         return dataTransformer.transformGroupResponse(saveGroup);
@@ -51,12 +50,10 @@ public class GroupService {
     }
 
     public GroupDTO addMember(Long groupId, Long userId) {
-        var findGroup = groupRepository.findById(groupId);
-        var group = findGroup.orElse(null);
-        var findUser = userRepository.findById(userId);
-        var user = findUser.orElse(null);
+        var group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
 
-        assert group != null;
+        var user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
+
         group.getMembers().add(user);
         var saveGroup = groupRepository.save(group);
         return dataTransformer.transformGroup(saveGroup);
@@ -64,10 +61,9 @@ public class GroupService {
     }
 
     public GroupDTO addSpending(Long groupId, Long userId, SpendingDTO spending) {
-        var findGroup = groupRepository.findById(groupId);
-        var group = findGroup.orElse(null);
-        var findUser = userRepository.findById(userId);
-        var user = findUser.orElse(null);
+        var group = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
+
+        var user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
 
         var spend = new Spending(
                 null,
@@ -78,11 +74,20 @@ public class GroupService {
                 group
         );
 
-        assert group != null;
         group.getSpending().add(spend);
         var saveGroup = groupRepository.save(group);
         return dataTransformer.transformGroup(saveGroup);
     }
 
 
+    public GroupDTO addAnonMember(AnonymusUserDTO user, Long groupId) {
+        var findGroup = groupRepository.findById(groupId).orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
+
+        User newAnon = User.createAnonymus(user.name());
+        userRepository.save(newAnon);
+        findGroup.getMembers().add(newAnon);
+        groupRepository.save(findGroup);
+
+        return dataTransformer.transformGroup(findGroup);
+    }
 }

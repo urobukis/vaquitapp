@@ -1,7 +1,10 @@
 package com.nibbio.vaquitapp.models.group;
 
 import com.nibbio.vaquitapp.models.spending.SpendingDTO;
+import com.nibbio.vaquitapp.models.user.AnonymusUserDTO;
 import com.nibbio.vaquitapp.models.user.User;
+import com.nibbio.vaquitapp.models.user.UserDTO;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,7 @@ import java.util.List;
 @RequestMapping("/groups")
 @Transactional
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearer-key")
 public class GroupController {
 
     private final GroupService groupService;
@@ -39,5 +43,10 @@ public class GroupController {
     }
 
 
+    @PostMapping("/addUserAnon")
+    public ResponseEntity<GroupDTO> addUserAnon(@RequestBody AnonymusUserDTO user, @RequestParam Long groupId){
+        var newUser = groupService.addAnonMember(user, groupId);
+        return ResponseEntity.ok().body(newUser);
+    }
 
 }

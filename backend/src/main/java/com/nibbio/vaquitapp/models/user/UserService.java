@@ -26,7 +26,8 @@ public class UserService {
                     dto.email(),
                     passwordEncoder.encode(dto.password()),
                     "https://res.cloudinary.com/du6ogdmyf/image/upload/v1752501748/JumpStart/icons8-usuario-masculino-en-c%C3%ADrculo-64_silvoo.png",
-                    null
+                    null,
+                    false
             );
             return userRepository.save(newUser);
         }

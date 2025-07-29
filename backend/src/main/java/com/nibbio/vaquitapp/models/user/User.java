@@ -2,10 +2,7 @@ package com.nibbio.vaquitapp.models.user;
 
 import com.nibbio.vaquitapp.models.group.Group;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,12 +21,26 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Setter
     private String name;
+    @Setter
     private String email;
     private String password;
+    @Setter
     private String image;
     @ManyToMany(mappedBy = "members")
     private List<Group> userGroups = new ArrayList<>();
+    @Setter
+    private boolean isAnonymous;
+
+    public static User createAnonymus(String name){
+        User u = new User();
+        u.setName(name);
+        u.setAnonymous(true);
+        u.setEmail(null);
+        u.setImage("https://res.cloudinary.com/du6ogdmyf/image/upload/v1752501748/JumpStart/icons8-usuario-masculino-en-c%C3%ADrculo-64_silvoo.png");
+        return u;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
