@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -41,7 +43,9 @@ public class AuthenticationController {
         refreshCookie.setMaxAge(7 * 24 * 60 * 60);
         response.addCookie(refreshCookie);
 
-        return ResponseEntity.ok(new DatosJWTToken(jwtToken));
+        var newToken = new DatosJWTToken(jwtToken);
+
+        return ResponseEntity.ok().body(Map.of("token", newToken, "name", user.getName(), "image", user.getImage(), "id", user.getId()));
     }
 
     @PostMapping("/register")
