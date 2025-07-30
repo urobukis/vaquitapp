@@ -1,7 +1,22 @@
+'use client'
+
+import { useCookies } from "react-cookie"
 import Tarjetas from "./tarjetas"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 
 export default function dashboard() {
+    const [cookies] = useCookies(["name"])
+
+    const router = useRouter()
+
+    useEffect(()=>{
+        if(!cookies.name){
+            router.replace("/auth/login")
+        }
+    }, [])
+
     return(
         <>
         {/* panel laterial y de navegacion*/}
@@ -18,7 +33,7 @@ export default function dashboard() {
                     </div>
 
                     <div className="mt-30 flex flex-wrap flex-gap-10 bg-[#37393a]"> 
-                        <button className="text-[#e8eef2]">User</button>
+                        <button className="text-[#e8eef2]">{cookies.name}</button>
                     </div>
                     
             </div>
