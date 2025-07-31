@@ -5,8 +5,10 @@ import com.nibbio.vaquitapp.models.user.UserLoginDTO;
 import com.nibbio.vaquitapp.models.user.UserRegisterDTO;
 import com.nibbio.vaquitapp.models.user.UserService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collections;
 import java.util.Map;
 
 @RestController
@@ -56,5 +59,15 @@ public class AuthenticationController {
             return ResponseEntity.ok("Usuario registrado con exito. Verifica tu correo");
         }
         return ResponseEntity.badRequest().body("Error al registrar: Ya existe un usuario con ese email.");
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshCookie(HttpServletRequest request, HttpServletResponse response){
+        try {
+            String token = tokenService.refreshAccessToken(request, response);
+            return ResponseEntity.ok().body(Collections.singletonMap("token", token));
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", e.getMessage()));
+        }
     }
 }

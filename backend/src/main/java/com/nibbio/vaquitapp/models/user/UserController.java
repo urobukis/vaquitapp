@@ -23,7 +23,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/addGroup")
-    public ResponseEntity<GroupResponseDTO> createGroup(@RequestBody GroupRequestDTO group, @AuthenticationPrincipal User user){
+    public ResponseEntity<?> createGroup(@RequestBody GroupRequestDTO group, @AuthenticationPrincipal User user){
         var newGroup = groupService.createGroup(group, user.getId());
         return ResponseEntity.ok().body(newGroup);
     }
