@@ -7,15 +7,21 @@ import { useRouter } from "next/navigation"
 
 
 export default function dashboard() {
-    const [cookies] = useCookies(["name"])
+
+{/* 
+        const [cookies] = useCookies(["name"])
 
     const router = useRouter()
-
     useEffect(()=>{
         if(!cookies.name){
             router.replace("/auth/login")
         }
     }, [])
+    
+    
+    
+    */}
+    
 
     return(
         <>
@@ -33,7 +39,7 @@ export default function dashboard() {
                     </div>
 
                     <div className="mt-30 flex flex-wrap flex-gap-10 bg-[#37393a]"> 
-                        <button className="text-[#e8eef2]">{cookies.name}</button>
+                        <button className="text-[#e8eef2]">USER</button>
                     </div>
                     
             </div>
