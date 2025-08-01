@@ -9,13 +9,13 @@ export default function LayoutContainer({children}){
 
     return(
         !panel ? (
-            <div className="flex h-screen">
+            <div className="flex min-h-screen">
                 {!panel && <Panel />}
                 {children}
             </div>
         ) 
         : (
-            <div className="flex h-screen items-center justify-center">   
+            <div className="flex min-h-screen items-center justify-center">   
                 {children}
             </div>
         )

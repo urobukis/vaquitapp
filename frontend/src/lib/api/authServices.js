@@ -78,6 +78,7 @@ api.interceptors.response.use(
 )
 
 export const useStore = create((set)=>({
+    groups:[],
     registerUser: async(data)=>{
         await api.post("/auth/register", data)
     },
@@ -118,12 +119,41 @@ export const useStore = create((set)=>({
     },
     getMyGroups: async()=>{
         const res = await api.get("/groups")
-        console.log(res.data);
+        set({groups: res.data})
         
         return res.data
     },
     getGroup: async(data)=>{
         const res = await api.get(`/groups/${data}`)
         return res.data
+    },
+    getBalances: async(data)=>{
+        const res = await api.get(`/spending/${data}/balances`)
+        return res.data
+    },
+    addSpend: async(data, groupId, userId)=>{
+        const res = await api.post(`/groups/addSpending?groupId=${groupId}&userId=${userId}`, data)
+       
+        return res.data
+    },
+    getUsersByName: async(data)=>{
+        const res = await api.get(`/user/search?name=${data}`)
+        
+        
+        return res.data.map(user => ({
+            label: user.name,
+            value: user.id
+        }))
+    },
+    addUserAnon: async(data, groupId)=>{
+        const res = await api.post(`/groups/addUserAnon?groupId=${groupId}`, data)
+        return res.data;
+    },
+    addMember: async(groupId, userId)=>{
+        const res = await api.post(`/groups/addMember?groupId=${groupId}&userId=${userId}`)
+        console.log(res.data);
+        
+        return res.data;
     }
+
 }))

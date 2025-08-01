@@ -6,12 +6,13 @@ import { useEffect } from "react"
 import { useCookies } from "react-cookie"
 import Tarjetas from "./tarjetas"
 import { useGroupsCache } from "@/hooks/useGroupsCache"
+import { useStore } from "@/lib/api/authServices"
 
 
 
 const Dashboard=()=> {
     const [cookies]=useCookies(["name"])
-    
+    const groups = useStore((state)=>state.groups)
     const router = useRouter()
 
    
@@ -34,7 +35,7 @@ const Dashboard=()=> {
                 <div className="bg-gray-300 ">
                     <div className="md:flex items-center justify-around p-2 sm:flex-nowrap">
                         {/* Datos de la pagina*/}
-                        <p className="">Dashboard</p>
+                        <p className="text-details">Dashboard</p>
                         {/* AddEevento*/}
                         <button className="bg-details p-2 rounded-full cursor-pointer" onClick={handleAddGroup}>
                             + Añadir Grupo
@@ -42,7 +43,7 @@ const Dashboard=()=> {
                     </div>
                     <div className="bg-background p-5 flex gap-2">
                         {
-                            !isLoading && data.map((item)=>(
+                            groups.length > 0 && groups.map((item)=>(
                                 <Tarjetas key={item.id} items={item}/>
                             ))
                         }
