@@ -1,4 +1,5 @@
-import React from "react";
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
 
 const items=[ {
             desc:"Vacaciones",
@@ -7,29 +8,32 @@ const items=[ {
         }
 ]
 
-
-
-const Eventos=()=>{
+const Tarjetas=({items})=>{
+    
+    
+    const [total, setTotal]=useState()
+    useEffect(() => {
+    if (items.spending.length > 0) {
+      const cost = items.spending.reduce((acc, item) => acc + item.amount, 0);
+      setTotal(cost);
+    } else {
+      setTotal(0);
+    }
+  }, [items.spending]);
+    
     return(
-        <>
-        
-            <div className="grid md:grid-cols-3 gap-5 mx-2">
-                
-                {items.map((items, index)=>(
-                    
-                    <div className="bg-[#1C6E8C] rounded-xl p-2 text-center font-sans " key={items.id}>
-                        <h3 className="text-[#e8eef2] font-thin font-light ">Descripción</h3>
-                        <h2 className="text-[#e8eef2] font-xl">{items.desc}</h2>
-                        <h3 className="text-[#e8eef2] font-thin font-light">Saldo</h3>
-                        <h2 className="text-[#e8eef2] font-lg ">{items.saldo}</h2>
-                    </div>
-
-                ))}
-
+        <div className="bg-container rounded-xl p-4 w-80 text-center font-sans flex flex-col gap-2" key={items.id}>
+            <div>
+                <h3 className="text-[#e8eef2] font-thin  ">Descripción</h3>
+                <h2 className="text-[#e8eef2] font-xl">{items.title}</h2>
             </div>
-        
-        </>
+            <div>
+                <h3 className="text-[#e8eef2] font-thin">Gastos totales</h3>
+                <h2 className="text-[#e8eef2] font-lg ">{items.spending.length > 0 ? total : "$0.00" }</h2>
+            </div>   
+            <Link href={`/dashboard/${items.id}`} className="bg-details p-2 rounded-xl cursor-pointer">Ver grupo</Link>
+        </div>
     )
 }
 
-export default Eventos
+export default Tarjetas

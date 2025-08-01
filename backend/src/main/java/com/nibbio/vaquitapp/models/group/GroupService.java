@@ -27,12 +27,13 @@ public class GroupService {
     public GroupResponseDTO createGroup(GroupRequestDTO group, Long id) {
         var myUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Grupo no encontrado"));
         List<User> members = new ArrayList<>();
+        List<Spending> spendings = new ArrayList<>();
         members.add(myUser);
         var newGroup = new Group(
                 null,
                 members,
                 group.title(),
-                null
+                spendings
         );
         myUser.getUserGroups().add(newGroup);
         var saveGroup = groupRepository.save(newGroup);
@@ -89,5 +90,10 @@ public class GroupService {
         groupRepository.save(findGroup);
 
         return dataTransformer.transformGroup(findGroup);
+    }
+
+    public GroupDTO getGroup(Long groupId) {
+        var group = groupRepository.findById(groupId).orElseThrow(()-> new RuntimeException("Grupo no encontrado"));
+        return dataTransformer.transformGroup(group);
     }
 }

@@ -6,7 +6,7 @@ import { Cookies } from "react-cookie";
 const cookies = new Cookies()
 
 const api = axios.create({
-    baseURL: "http://localhost:8080",
+    baseURL: "https://vaquitapp.onrender.com",
     withCredentials: true
 })
 
@@ -51,7 +51,7 @@ api.interceptors.response.use(
 
             try{
                 const res = await axios.post(
-                    "http://localhost:8080/auth/refresh",
+                    "https://vaquitapp.onrender.com/auth/refresh",
                     {},
                     {withCredentials: true}
                 )
@@ -83,11 +83,12 @@ export const useStore = create((set)=>({
     },
     loginUser: async(data)=>{
         const res = await api.post("/auth/login", data)
-
+        console.log(res.data);
+        
         const name = res.data.name
         const image = res.data.image
         const id = res.data.id
-        const token = res.data.token
+        const token = res.data.token.token
 
         cookies.set("access_token", token, {
             path: "/",
@@ -111,5 +112,18 @@ export const useStore = create((set)=>({
             sameSite: "strict",
         });
         return res
+    },
+    addGroup:async (data)=>{
+        await api.post("/user/addGroup", data)
+    },
+    getMyGroups: async()=>{
+        const res = await api.get("/groups")
+        console.log(res.data);
+        
+        return res.data
+    },
+    getGroup: async(data)=>{
+        const res = await api.get(`/groups/${data}`)
+        return res.data
     }
 }))

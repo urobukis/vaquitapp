@@ -3,7 +3,6 @@ package com.nibbio.vaquitapp.models.group;
 import com.nibbio.vaquitapp.models.spending.SpendingDTO;
 import com.nibbio.vaquitapp.models.user.AnonymusUserDTO;
 import com.nibbio.vaquitapp.models.user.User;
-import com.nibbio.vaquitapp.models.user.UserDTO;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +23,14 @@ public class GroupController {
 
     @GetMapping
     public ResponseEntity<List<GroupDTO>> getGroups(@AuthenticationPrincipal User user){
-        System.out.println(user.getId());
         var groups = groupService.getGroups(user.getId());
         return ResponseEntity.ok().body(groups);
+    }
+
+    @GetMapping("/{groupId}")
+    public ResponseEntity<GroupDTO> getGroup(@PathVariable Long groupId){
+        var group = groupService.getGroup(groupId);
+        return ResponseEntity.ok().body(group);
     }
 
 
