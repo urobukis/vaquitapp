@@ -1,3 +1,4 @@
+import { useCurrency } from "@/hooks/useCurrency";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -9,7 +10,7 @@ const items=[ {
 ]
 
 const Tarjetas=({items})=>{
-    
+    const {formatCurrency} =useCurrency()
     
     const [total, setTotal]=useState()
     useEffect(() => {
@@ -29,7 +30,7 @@ const Tarjetas=({items})=>{
             </div>
             <div>
                 <h3 className="text-[#e8eef2] font-thin">Gastos totales</h3>
-                <h2 className="text-[#e8eef2] font-lg ">{items.spending.length > 0 ? total : "$0.00" }</h2>
+                <h2 className="text-[#e8eef2] font-lg ">{items.spending.length > 0 ? formatCurrency(total) : "$0.00" }</h2>
             </div>   
             <Link href={`/dashboard/${items.id}`} className="bg-details p-2 rounded-xl cursor-pointer">Ver grupo</Link>
         </div>
