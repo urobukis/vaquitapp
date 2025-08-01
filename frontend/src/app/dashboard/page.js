@@ -1,72 +1,57 @@
 'use client'
 
-import { useCookies } from "react-cookie"
-import Tarjetas from "./tarjetas"
-import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 
+import { useEffect } from "react"
+import { useCookies } from "react-cookie"
+import Tarjetas from "./tarjetas"
+import { useGroupsCache } from "@/hooks/useGroupsCache"
 
-export default function dashboard() {
 
-{/* 
-        const [cookies] = useCookies(["name"])
 
+const Dashboard=()=> {
+    const [cookies]=useCookies(["name"])
+    
     const router = useRouter()
+
+   
+    
     useEffect(()=>{
-        if(!cookies.name){
-            router.replace("/auth/login")
-        }
+            if(!cookies.name){
+                router.replace("/auth/login")
+            }
     }, [])
-    
-    
-    
-    */}
-    
+
+    const {data, isLoading}= useGroupsCache()
+    const handleAddGroup=()=>{
+        router.push("/dashboard/crearGrupo")
+    }
 
     return(
         <>
-        {/* panel laterial y de navegacion*/}
-            <div className="grid md:grid-cols-12 gap-8 ">
-                
-                <div className="bg-[#F3B447] md:col-span-2 min-h-100 text-center">
-                    <p className="pt-8 pb-5">Vaquita</p>
-                    <div>
-                        <ul className="list-none pt-10">
-                            <li><a href="/dashboard">Dashboard</a></li>
-                            <li><a href="/crearevento">Detalle</a></li>
-                            <li><a href="">Configuracion</a></li>
-                        </ul> 
-                    </div>
-
-                    <div className="mt-30 flex flex-wrap flex-gap-10 bg-[#37393a]"> 
-                        <button className="text-[#e8eef2]">USER</button>
-                    </div>
-                    
-            </div>
-
+            <div className="w-full gap-8 ">
         {/* informacion*/}
-            <div className="bg-gray-300 md:col-span-10">
-                <div className="md:flex sm:flex-nowrap">
-                    {/* Datos de la pagina*/}
-                    <div className="md:w-1/2 sm:w-1 md:text-left text-center">
-                        <p className="md:text-left md:pl-30 mt-5">Dashboard</p>
+                <div className="bg-gray-300 ">
+                    <div className="md:flex items-center justify-around p-2 sm:flex-nowrap">
+                        {/* Datos de la pagina*/}
+                        <p className="">Dashboard</p>
+                        {/* AddEevento*/}
+                        <button className="bg-details p-2 rounded-full cursor-pointer" onClick={handleAddGroup}>
+                            + Añadir Grupo
+                        </button>
                     </div>
-                    {/* AddEevento*/}
-                    <div className="md:w-1/2 sm:w-1 md:text-right text-center md:pr-18 mt-5"> <button className="bg-[#F3B447] p-2 rounded-full">+Add Event</button>
-                    </div>
-                    </div>
-
-                    <div className="bg-[#274156] p-5">
-                    <Tarjetas/>
-                </div>   
+                    <div className="bg-background p-5 flex gap-2">
+                        {
+                            !isLoading && data.map((item)=>(
+                                <Tarjetas key={item.id} items={item}/>
+                            ))
+                        }
+                    </div>  
                 </div>  
                 {/* bandeja*/}
-
-            
-                  
-                
-                
             </div>
         </>
     )
  }
+
+ export default Dashboard;

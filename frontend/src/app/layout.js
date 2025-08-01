@@ -1,8 +1,10 @@
-
-
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import CookiesWrapper from "@/providers/CookiesWrapper";
+import Panel from "@/components/Panel";
+import LayoutContainer from "@/components/LayoutContainer";
+import QueryWrapper from "@/providers/QueryWrapper";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,13 +22,18 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+ 
   return (
     <html lang="es">
       <body
         className={`${geistSans.variable} ${geistMono.variable}antialiased`}
       >
         <CookiesWrapper>
-        {children}
+          <QueryWrapper>
+            <LayoutContainer>
+              {children}
+            </LayoutContainer>
+          </QueryWrapper>
         </CookiesWrapper>
       </body>
     </html>
