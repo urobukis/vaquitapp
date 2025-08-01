@@ -23,18 +23,18 @@ public class TokenService {
 
     private final UserRepository userRepository;
 
-    @Value("${MYSQL_PASSWORD}")
+    @Value("${jwt.secret.key}")
     private String apikey;
 
-    @Value("${MYSQL_DATABASE}")
-    private String database;
+    @Value("${jwt.issuer}")
+    private String issuer;
 
     public String generarToken(User user){
         try{
             Algorithm algorithm = Algorithm.HMAC256(apikey);
             Instant expiration = getExpirationFifteenMinutes();
             String token =  JWT.create()
-                    .withIssuer(database)
+                    .withIssuer(issuer)
                     .withSubject(user.getEmail())
                     .withExpiresAt(getExpirationFifteenMinutes())
                     .sign(algorithm);
@@ -51,7 +51,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(apikey);
             Instant expiration = getExpirationSevenDays();
             String token = JWT.create()
-                    .withIssuer(database)
+                    .withIssuer(issuer)
                     .withSubject(user.getEmail())
                     .withExpiresAt(expiration)
                     .sign(algorithm);
@@ -76,7 +76,7 @@ public class TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(apikey);
             verifier = JWT.require(algorithm)
-                    .withIssuer(database)
+                    .withIssuer(issuer)
                     .build()
                     .verify(token);
         }catch (JWTCreationException exception){
@@ -92,7 +92,7 @@ public class TokenService {
         try{
             Algorithm algorithm = Algorithm.HMAC256(apikey);
             DecodedJWT jwt = JWT.require(algorithm)
-                    .withIssuer(database)
+                    .withIssuer(issuer)
                     .build()
                     .verify(token);
 
